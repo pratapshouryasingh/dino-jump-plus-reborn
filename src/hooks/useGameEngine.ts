@@ -157,8 +157,11 @@ export const useGameEngine = () => {
     scoreRef.current += 0.1;
     setScore(Math.floor(scoreRef.current));
 
-    // Increase speed over time
-    gameSpeedRef.current = Math.min(4 + scoreRef.current * 0.005, 12);
+    // Increase speed over time with boost after 100 points
+    const baseSpeed = 4;
+    const normalSpeedIncrease = scoreRef.current * 0.005;
+    const speedBoostAfter100 = scoreRef.current >= 100 ? 3 : 0;
+    gameSpeedRef.current = Math.min(baseSpeed + normalSpeedIncrease + speedBoostAfter100, 15);
 
     gameLoopRef.current = requestAnimationFrame(gameLoop);
   }, [gameState, highScore]);
