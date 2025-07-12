@@ -17,21 +17,21 @@ const Index = () => {
     obstacles
   } = useGameEngine();
 
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.code === 'Space') {
-      e.preventDefault();
-      if (gameState === 'waiting' || gameState === 'gameOver') {
-        startGame();
-      } else if (gameState === 'playing') {
-        jump();
-      }
-    }
-  };
-
   useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (gameState === 'waiting' || gameState === 'gameOver') {
+          startGame();
+        } else if (gameState === 'playing') {
+          jump();
+        }
+      }
+    };
+
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [gameState]);
+  }, [gameState, startGame, jump]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-600 via-blue-600 to-blue-800 flex flex-col items-center justify-center p-4">
