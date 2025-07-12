@@ -12,7 +12,9 @@ const Index = () => {
     highScore,
     startGame,
     jump,
-    resetGame
+    resetGame,
+    dinosaur,
+    obstacles
   } = useGameEngine();
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -49,6 +51,8 @@ const Index = () => {
           <GameUI score={score} highScore={highScore} gameState={gameState} />
           <GameCanvas 
             gameState={gameState}
+            dinosaur={dinosaur}
+            obstacles={obstacles}
             onJump={jump}
             onStart={startGame}
             onReset={resetGame}

@@ -1,17 +1,18 @@
 
 import { useEffect, useRef } from 'react';
-import { useGameEngine, GameState } from '@/hooks/useGameEngine';
+import { GameState, Dinosaur, Obstacle } from '@/hooks/useGameEngine';
 
 interface GameCanvasProps {
   gameState: GameState;
+  dinosaur: Dinosaur;
+  obstacles: Obstacle[];
   onJump: () => void;
   onStart: () => void;
   onReset: () => void;
 }
 
-export const GameCanvas = ({ gameState, onJump, onStart, onReset }: GameCanvasProps) => {
+export const GameCanvas = ({ gameState, dinosaur, obstacles, onJump, onStart, onReset }: GameCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { dinosaur, obstacles } = useGameEngine();
 
   const CANVAS_WIDTH = 800;
   const CANVAS_HEIGHT = 300;
