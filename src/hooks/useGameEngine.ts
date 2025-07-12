@@ -41,6 +41,7 @@ export const useGameEngine = () => {
   const obstaclesRef = useRef<Obstacle[]>([]);
   const gameSpeedRef = useRef(4);
   const scoreRef = useRef(0);
+  const lastObstacleSpawnRef = useRef(0);
 
   const CANVAS_HEIGHT = 300;
   const GROUND_Y = 240;
@@ -66,6 +67,7 @@ export const useGameEngine = () => {
     
     // Clear obstacles
     obstaclesRef.current = [];
+    lastObstacleSpawnRef.current = 0;
   }, []);
 
   const jump = useCallback(() => {
@@ -113,15 +115,28 @@ export const useGameEngine = () => {
       return obstacle.x + obstacle.width > 0;
     });
 
-    // Spawn new obstacles
-    if (Math.random() < 0.008) {
-      obstaclesRef.current.push({
-        x: 800,
-        y: GROUND_Y - 30,
-        width: 17,
-        height: 35,
-        speed: gameSpeedRef.current
-      });
+    // Spawn new obstacles with proper spacing
+    const minSpacing = 300; // Minimum distance between obstacles
+    const maxSpacing = 500; // Maximum distance between obstacles
+    const shouldSpawn = obstaclesRef.current.length === 0 || 
+      (obstaclesRef.current[obstaclesRef.current.length - 1].x < 800 - minSpacing &&
+       Math.random() < 0.008);
+    
+    if (shouldSpawn) {
+      const spacing = minSpacing + Math.random() * (maxSpacing - minSpacing);
+      const lastObstacleX = obstaclesRef.current.length > 0 
+        ? obstaclesRef.current[obstaclesRef.current.length - 1].x 
+        : -spacing;
+      
+      if (800 - lastObstacleX >= spacing) {
+        obstaclesRef.current.push({
+          x: 800,
+          y: GROUND_Y - 30,
+          width: 17,
+          height: 35,
+          speed: gameSpeedRef.current
+        });
+      }
     }
 
     // Check collisions
